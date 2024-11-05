@@ -29,7 +29,7 @@ module OnlyOffice
     end
 
     class JWT
-      sig { params(header: String).returns(T.nilable(String)) }
+      sig { params(header: T.any(String, T.anything)).returns(T.nilable(String)) }
       def decode_header(header)
         token = header["Bearer ".length, header.length - 1]
         unless token
@@ -45,7 +45,7 @@ module OnlyOffice
         payload.to_json
       end
 
-      sig { params(input: T.any(IO, StringIO)).returns(T.nilable(String)) }
+      sig { params(input: T.any(IO, StringIO, T.anything)).returns(T.nilable(String)) }
       def decode_body(input)
         if input.respond_to?(:rewind)
           input.rewind
