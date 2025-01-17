@@ -1,4 +1,4 @@
-# Redmine ONLYOFFICE Integration Plugin
+# ONLYOFFICE plugin for Redmine
 
 This plugin enables users to edit attachments from [Redmine](https://www.redmine.org/) using ONLYOFFICE Docs packaged as Document Server — [Community or Enterprise Edition](#onlyoffice-docs-editions).
 
@@ -49,7 +49,7 @@ We recommend using [Docker](https://github.com/onlyoffice/Docker-DocumentServer)
 
 To install Enterprise Edition, follow [these instructions](https://helpcenter.onlyoffice.com/installation/docs-enterprise-index.aspx).
 
-## Installing Redmine ONLYOFFICE Integration Plugin
+## Installing ONLYOFFICE plugin for Redmine
 
 To install the plugin, you will need Redmine version 4.2 or higher, or version 5.0 or higher. It is also important to note that the plugin is compatible with Ruby version 2.7.2 or higher, or 3.0.0 or higher. We recommend using Redmine 5 along with Ruby 3.
 
@@ -83,7 +83,7 @@ RAILS_ENV=production bundle exec rake redmine:plugins:migrate NAME=onlyoffice_re
 
 And finally, restart Redmine. Read more about the plugin installation on the Redmine [Wiki page](https://www.redmine.org/projects/redmine/wiki/Plugins#Installing-a-plugin).
 
-## Configuring Redmine ONLYOFFICE Integration Plugin
+## Configuring ONLYOFFICE plugin for Redmine
 
 <details>
   <summary>Show settings page of the plugin</summary>

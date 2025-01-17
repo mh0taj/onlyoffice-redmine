@@ -59,9 +59,9 @@ check_gem("sorbet-runtime", "~> 0.5.10969")
 
 Redmine::Plugin.register(OnlyOfficeRedmine::NAME.to_sym) do
   # rubocop:disable Layout/LineLength
-  name        "Redmine ONLYOFFICE integration plugin"
+  name        "ONLYOFFICE plugin for Redmine"
   author      "ONLYOFFICE"
-  description "Redmine ONLYOFFICE integration plugin allows opening files uploaded to the Issues, Files, Documents, Wiki, or News modules for viewing and co-editing."
+  description "ONLYOFFICE plugin for Redmine allows opening files uploaded to the Issues, Files, Documents, Wiki, or News modules for viewing and co-editing."
   version     OnlyOfficeRedmine::VERSION
   url         "https://github.com/ONLYOFFICE/onlyoffice-redmine"
   author_url  "https://www.onlyoffice.com"
