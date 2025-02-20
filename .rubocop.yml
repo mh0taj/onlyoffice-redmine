@@ -3,7 +3,6 @@
 # https://github.com/rubocop/rubocop/issues/1065
 
 require:
-- rubocop-minitest
 - rubocop-rails
 - rubocop-rake
 - rubocop-sorbet
@@ -270,20 +269,6 @@ Style/SymbolArray:
 Style/WordArray:
   Enabled: true
   EnforcedStyle: brackets
-
-# Minitest
-
-Minitest:
-  Include:
-  - test/**/*.rb
-
-Minitest/EmptyLineBeforeAssertionMethods:
-  Enabled: false
-
-# Prefix, postfix, just use the same name as the module that should be tested.
-# In any case, tests are separated from the source code.
-Minitest/TestFileName:
-  Enabled: false
 
 # Rails
 

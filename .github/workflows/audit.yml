@@ -2,9 +2,13 @@ name: Audit
 
 on:
   pull_request:
-    branches: [main, develop]
+    branches:
+    - master
+    - develop
   push:
-    branches: [main]
+    branches:
+    - master
+    - develop
   workflow_dispatch:
 
 jobs:
@@ -15,35 +19,22 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: Setup Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        bundler-cache: true
-
-    - name: Update Submodules
-      run: make submodule
-
-    - name: Cache Dependencies
-      id: cache-dependencies
+    - name: Persist Dependencies
       uses: actions/cache@v3
       with:
         path: |
           bin
           sorbet
-        key: ${{ runner.os }}-dependencies
+        key: deps
+
+    - name: Setup mise
+      uses: jdx/mise-action@v2
+
+    - name: Update Submodules
+      run: make submodule
 
     - name: Install Dependencies
-      if: steps.cache-dependencies.outputs.cache-hit != 'true'
       run: make install
 
-    # Currently, there's no way to accurately check types because there's no way
-    # to generate definitions from Redmine's source code.
-    # - name: Check for Type Safety
-    #   run: make type
-
-    - name: Lint for the Style
+    - name: Run Linting
       run: make lint
-
-    # We don't have tests.
-    # - name: Run Tests
-    #   run: make test

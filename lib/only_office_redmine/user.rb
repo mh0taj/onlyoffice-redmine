@@ -51,6 +51,11 @@ module OnlyOfficeRedmine
       @user.id
     end
 
+    sig { returns(String) }
+    def name
+      @user.name
+    end
+
     sig do
       params(
         action: T.untyped,
@@ -62,18 +67,6 @@ module OnlyOfficeRedmine
     end
     def allowed_to?(action, context, options = {}, &block)
       @user.allowed_to?(action, context, options, &block)
-    end
-
-    sig { returns(OnlyOffice::APP::Config) }
-    def app_config
-      OnlyOffice::APP::Config.new(
-        editor_config: OnlyOffice::APP::Config::EditorConfig.new(
-          user: OnlyOffice::APP::Config::User.new(
-            id: @user.id.to_s,
-            name: "#{@user.lastname} #{@user.firstname}"
-          )
-        )
-      )
     end
   end
 end

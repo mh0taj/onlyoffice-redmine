@@ -209,30 +209,5 @@ module OnlyOfficeRedmine
       extension = File.extname(name)
       extension.downcase
     end
-
-    sig { params(user: User).returns(OnlyOffice::APP::Config) }
-    def app_config(user)
-      format = self.format
-
-      config = OnlyOffice::APP::Config.new
-      if format
-        config.document_type = format.type
-      end
-
-      document = OnlyOffice::APP::Config::Document.new(
-        key: token,
-        title: filename,
-        permissions: OnlyOffice::APP::Config::Permissions.new(
-          edit: editable?(user),
-          fill_forms: fillable?(user)
-        )
-      )
-      if format
-        document.file_type = format.name
-      end
-
-      config.document = document
-      config
-    end
   end
 end

@@ -36,12 +36,7 @@ module OnlyOffice
           return nil
         end
 
-        data, = decode(token)
-        payload = data["payload"]
-        unless payload
-          return nil
-        end
-
+        payload = jwt.decode_header(token)
         payload.to_json
       end
 
@@ -57,83 +52,37 @@ module OnlyOffice
         end
 
         data = JSON.parse(json)
-
-        token = data["token"]
-        token = T.let(token, T.nilable(String))
-        unless token
-          return nil
-        end
-
-        payload, = decode(token)
+        payload = jwt.decode_body(data)
         payload.to_json
       end
 
       sig { params(url: String).returns(T.nilable(String)) }
       def decode_url(url)
-        uri = URI(url)
-
-        query = uri.query
-        unless query
-          return nil
-        end
-
-        form = URI.decode_www_form(query)
-
-        pair = form.assoc("token")
-        unless pair
-          return nil
-        end
-
-        token = pair.last
-        data, = decode(token)
-
-        url = data["url"]
-        url = T.let(url, T.nilable(String))
-        unless url
-          return nil
-        end
-
-        form.delete(["token", token])
-        uri.query = URI.encode_www_form(form)
-
-        # If the uri only has a token in the query, the uri will end with
-        # the `?` after removing the token.
-        unless url == uri.to_s || "#{url}?" == uri.to_s
-          return nil
-        end
-
-        url
-      end
-
-      sig do
-        params(token: String)
-          .returns([T::Hash[T.untyped, T.untyped], T.untyped])
-      end
-      def decode(token)
-        ::JWT.decode(token, secret, true, { algorithm: algorithm })
+        uri = T.cast(URI(url), URI::HTTP)
+        uri = jwt.decode_uri(uri)
+        uri.to_s
       end
 
       sig { params(payload: T::Hash[T.untyped, T.untyped]).returns(String) }
       def encode_payload(payload)
-        payload = payload.dup
-        payload["token"] = encode(payload)
-        payload.to_json
+        body = jwt.encode_body(payload)
+        body.to_json
       end
 
       sig { params(url: String).returns(String) }
       def encode_url(url)
-        uri = URI(url)
-        query = uri.query || ""
-        form = URI.decode_www_form(query)
-        token = encode({ url: url })
-        form.append(["token", token])
-        uri.query = URI.encode_www_form(form)
+        uri = T.cast(URI(url), URI::HTTP)
+        uri = jwt.encode_uri(uri)
         uri.to_s
       end
 
-      sig { params(payload: T.untyped).returns(String) }
-      def encode(payload)
-        ::JWT.encode(payload, secret, algorithm, { algorithm: algorithm })
+      sig { returns(Onlyoffice::DocsIntegrationSdk::Jwt) }
+      def jwt
+        Onlyoffice::DocsIntegrationSdk::Jwt.new(
+          secret: secret,
+          algorithm: algorithm,
+          claims: []
+        )
       end
     end
   end

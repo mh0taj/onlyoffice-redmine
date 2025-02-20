@@ -56,25 +56,6 @@ module OnlyOfficeRedmine
 
     sig { abstract.params(helpers: T.untyped).returns(String) }
     def home_url(helpers); end
-
-    sig do
-      overridable
-        .params(helpers: T.untyped)
-        .returns(OnlyOffice::APP::Config)
-    end
-    def app_config(helpers)
-      OnlyOffice::APP::Config.new(
-        editor_config: OnlyOffice::APP::Config::EditorConfig.new(
-          customization: OnlyOffice::APP::Config::Customization.new(
-            go_back: OnlyOffice::APP::Config::GenericGoBack.new(
-              value: OnlyOffice::APP::Config::StructGoBack.new(
-                url: home_url(helpers)
-              )
-            )
-          )
-        )
-      )
-    end
   end
 
   class GenericContainer

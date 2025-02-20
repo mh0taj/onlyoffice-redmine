@@ -525,32 +525,43 @@ class OnlyOfficeAttachmentsController < ApplicationController
       retrieve_url = settings.fallback_jwt.encode_url(retrieve_url)
     end
 
-    a = OnlyOffice::APP::Config.new(
-      document: OnlyOffice::APP::Config::Document.new(
-        url: download_url
+    config = Onlyoffice::DocsIntegrationSdk::DocumentEditor::Config.new(
+      document_type: Onlyoffice::DocsIntegrationSdk::DocumentEditor::Config::DocumentType.from_serialized(format.type),
+      document: Onlyoffice::DocsIntegrationSdk::DocumentEditor::Config::Document.new(
+        file_type: format.name,
+        key: attachment.token,
+        title: attachment.filename,
+        url: download_url,
+        permissions: Onlyoffice::DocsIntegrationSdk::DocumentEditor::Config::Document::Permissions.new(
+          chat: settings.editor.chat_enabled,
+          edit: attachment.editable?(user),
+          fill_forms: attachment.fillable?(user)
+        )
       ),
-      editor_config: OnlyOffice::APP::Config::EditorConfig.new(
+      editor_config: Onlyoffice::DocsIntegrationSdk::DocumentEditor::Config::EditorConfig.new(
         callback_url: callback_url,
-        mode: mode
+        lang: I18n.locale.to_s,
+        mode: Onlyoffice::DocsIntegrationSdk::DocumentEditor::Config::EditorConfig::Mode.from_serialized(mode),
+        user: Onlyoffice::DocsIntegrationSdk::DocumentEditor::Config::EditorConfig::User.new(
+          id: user.id.to_s,
+          name: user.name
+        ),
+        customization: Onlyoffice::DocsIntegrationSdk::DocumentEditor::Config::EditorConfig::Customization.new(
+          compact_header: settings.editor.compact_header_enabled,
+          feedback: settings.editor.feedback_enabled,
+          forcesave: settings.editor.force_save_enabled,
+          goback: Onlyoffice::DocsIntegrationSdk::DocumentEditor::Config::EditorConfig::Customization::GoBack.new(
+            url: container.home_url(helpers)
+          ),
+          help: settings.editor.help_enabled,
+          toolbar_no_tabs: settings.editor.toolbar_tabs_disabled
+        )
       )
     )
-    b = container.app_config(helpers)
-    c = settings.app_config
-    d = attachment.app_config(user)
-    e = user.app_config
-
-    # TODO: move merging to the library.
-    f =
-      a
-      .serialize
-      .deep_merge(b.serialize)
-      .deep_merge(c.serialize)
-      .deep_merge(d.serialize)
-      .deep_merge(e.serialize)
 
     view = Views::OnlyOffice::Editor.new(helpers: helpers)
     view.document_server_api_base_url = settings.document_server.url
-    view.document_server_config = settings.jwt.encode_payload(f)
+    view.document_server_config = settings.jwt.encode_payload(config.serialize)
     view.retrieve_url = retrieve_url
     view.save_as_allowed = container.addition_allowed?(user)
     view.form = format.form?
@@ -765,12 +776,17 @@ class OnlyOfficeAttachmentsController < ApplicationController
     end
 
     client = settings.client
+
     http = client.http
     http.open_timeout = 5
     http.read_timeout = settings.conversion.timeout / 1000
-    client = OnlyOffice::API::Client.new(base_url: client.base_url, http: http)
 
-    conversion = OnlyOffice::API::Conversion.new(
+    client = Onlyoffice::DocsIntegrationSdk::DocumentServer::Client.new(
+      http: http,
+      base_uri: client.base_uri,
+    )
+
+    request = Onlyoffice::DocsIntegrationSdk::DocumentServer::Client::ConversionService::Request.new(
       async: true,
       filetype: from.name,
       key: attachment.token,
@@ -779,53 +795,76 @@ class OnlyOfficeAttachmentsController < ApplicationController
       title: "#{payload.name}#{to.extension}",
       url: download_url
     )
+
     if to.image?
-      conversion.thumbnail = OnlyOffice::API::Conversion::Thumbnail.new(
+      request.thumbnail = Onlyoffice::DocsIntegrationSdk::DocumentServer::Client::ConversionService::Request::Thumbnail.new(
         first: false
       )
     end
 
-    result, response = client.conversion.convert(conversion)
+    result, response = client.conversion.do(request)
 
     begin
-      case result
-      when OnlyOffice::API::ConversionError
-        logger.error("#{result.description} (#{response.code} #{response.message})")
+      error = response.error
+      unless error.nil?
+        description = "Unknown error"
+        if error.is_a?(Onlyoffice::DocsIntegrationSdk::DocumentServer::Client::ConversionService::Error)
+          description = error.description
+        end
+
+        logger.error("#{description} (#{response.response.message.code} #{response.response.message.message})")
         raise OnlyOfficeRedmine::Error.internal
-      when OnlyOffice::API::ConversionProgress
+      end
+
+      end_convert = result.end_convert
+      if !end_convert.nil? && end_convert
         self.response.add_header("Cache-Control", "no-cache, no-store")
         return render(json: result.serialize)
-      when OnlyOffice::API::ConversionComplete
-        if result.file_type != to.name
-          to = result.file_format
-          unless to
-            logger.error("The format (#{result.file_format}) doesn't supported")
-            raise OnlyOfficeRedmine::Error.unsupported
-          end
-        end
-
-        file_uri = URI(result.file_url)
-        file = T.unsafe(file_uri).open(ssl_verify_mode: settings.ssl.verify_mode)
-
-        attachment = Attachment.create(
-          file: file,
-          author: user.internal,
-          content_type: to.content_type,
-          filename: "#{payload.name}#{to.extension}",
-          description: payload.description
-        )
-
-        container.attachments.append(attachment)
-        saved = container.save
-        unless saved
-          logger.error("Failed to save the #{container.type} (#{container.id}) with new attachment")
-          raise OnlyOfficeRedmine::Error.internal
-        end
-
-        flash[:notice] = I18n.t("notice_successful_create")
-      else
-        # nothing
       end
+
+      file_type = result.file_type
+      if file_type.nil?
+        logger.error("file_type is nil")
+        raise OnlyOfficeRedmine::Error.internal
+      end
+
+      file_url = result.file_url
+      if file_url.nil?
+        logger.error("file_url is nil")
+        raise OnlyOfficeRedmine::Error.internal
+      end
+
+      if file_type != to.name
+        formats = OnlyOfficeRedmine::Resources::Formats.read
+        to = formats.all.find do |format|
+          format.name == result.file_type
+        end
+
+        unless to
+          logger.error("The format (#{to}) doesn't supported")
+          raise OnlyOfficeRedmine::Error.unsupported
+        end
+      end
+
+      file_uri = URI(file_url)
+      file = T.unsafe(file_uri).open(ssl_verify_mode: settings.ssl.verify_mode)
+
+      attachment = Attachment.create(
+        file: file,
+        author: user.internal,
+        content_type: to.content_type,
+        filename: "#{payload.name}#{to.extension}",
+        description: payload.description,
+      )
+
+      container.attachments.append(attachment)
+      saved = container.save
+      unless saved
+        logger.error("Failed to save the #{container.type} (#{container.id}) with new attachment")
+        raise OnlyOfficeRedmine::Error.internal
+      end
+
+      flash[:notice] = I18n.t("notice_successful_create")
     rescue OnlyOfficeRedmine::Error
       flash[:error] = I18n.t("onlyoffice_attachment_create_error")
     end
@@ -897,12 +936,17 @@ class OnlyOfficeAttachmentsController < ApplicationController
     end
 
     client = settings.client
+
     http = client.http
     http.open_timeout = 5
     http.read_timeout = settings.conversion.timeout / 1000
-    client = OnlyOffice::API::Client.new(base_url: client.base_url, http: http)
 
-    conversion = OnlyOffice::API::Conversion.new(
+    client = Onlyoffice::DocsIntegrationSdk::DocumentServer::Client.new(
+      http: http,
+      base_uri: client.base_uri,
+    )
+
+    request = Onlyoffice::DocsIntegrationSdk::DocumentServer::Client::ConversionService::Request.new(
       async: true,
       filetype: from.name,
       key: attachment.token,
@@ -911,29 +955,42 @@ class OnlyOfficeAttachmentsController < ApplicationController
       title: "#{payload.name}#{to.extension}",
       url: download_url
     )
+
     if to.image?
-      conversion.thumbnail = OnlyOffice::API::Conversion::Thumbnail.new(
+      request.thumbnail = Onlyoffice::DocsIntegrationSdk::DocumentServer::Client::ConversionService::Request::Thumbnail.new(
         first: false
       )
     end
 
-    result, response = client.conversion.convert(conversion)
+    result, response = client.conversion.do(request)
 
     begin
-      case result
-      when OnlyOffice::API::ConversionError
-        logger.error("#{result.description} (#{response.code} #{response.message})")
+      error = response.error
+      unless error.nil?
+        description = "Unknown error"
+        if error.is_a?(Onlyoffice::DocsIntegrationSdk::DocumentServer::Client::ConversionService::Error)
+          description = error.description
+        end
+
+        logger.error("#{description} (#{response.response.message.code} #{response.response.message.message})")
         raise OnlyOfficeRedmine::Error.internal
-      when OnlyOffice::API::ConversionProgress
+      end
+
+      end_convert = result.end_convert
+      if !end_convert.nil? && end_convert
         self.response.add_header("Cache-Control", "no-cache, no-store")
         return render(json: result.serialize)
-      when OnlyOffice::API::ConversionComplete
-        file_url = settings.document_server.resolve_url(result.file_url)
-        flash[:notice] = I18n.t("notice_successful_create")
-        return render(json: { url: file_url })
-      else
-        # nothing
       end
+
+      file_url = result.file_url
+      if file_url.nil?
+        logger.error("file_url is nil")
+        raise OnlyOfficeRedmine::Error.internal
+      end
+
+      file_url = settings.document_server.resolve_internal_url(file_url)
+      flash[:notice] = I18n.t("notice_successful_create")
+      return render(json: { url: file_url })
     rescue OnlyOfficeRedmine::Error
       flash[:error] = I18n.t("onlyoffice_attachment_create_error")
     end
@@ -1019,7 +1076,7 @@ class OnlyOfficeAttachmentsController < ApplicationController
       settings = settings.with_trial
     end
 
-    response = OnlyOffice::APP::CallbackError.new
+    response = Onlyoffice::DocsIntegrationSdk::DocumentStorage::Callback::Response.new(error: 0)
 
     begin
       file_url = settings.document_server.resolve_internal_url(retrieve_params.url)
@@ -1100,15 +1157,24 @@ class OnlyOfficeAttachmentsController < ApplicationController
 
     callback_json = request.body.read
     callback_hash = JSON.parse(callback_json)
-    callback = OnlyOffice::APP::CallbackGeneric.from_hash(callback_hash)
+    callback = T.cast(
+      Onlyoffice::DocsIntegrationSdk::DocumentStorage::Callback::Request.from_hash(callback_hash),
+      Onlyoffice::DocsIntegrationSdk::DocumentStorage::Callback::Request
+    )
 
     begin
+      status = callback.status
+      if status.nil?
+        logger.error("status is nil")
+        raise OnlyOfficeRedmine::Error.internal
+      end
+
       # rubocop:disable Lint/DuplicateBranch
-      case callback
-      when OnlyOffice::APP::CallbackBusy
-        logger.info(callback.description)
-      when OnlyOffice::APP::CallbackReady
-        logger.info(callback.description)
+      case status
+      when Onlyoffice::DocsIntegrationSdk::DocumentStorage::Callback::Request::Status::Editing
+        logger.info(status.description)
+      when Onlyoffice::DocsIntegrationSdk::DocumentStorage::Callback::Request::Status::Save
+        logger.info(status.description)
 
         settings = OnlyOfficeRedmine::Settings.current
         settings.plugin.url = helpers.home_url
@@ -1116,7 +1182,13 @@ class OnlyOfficeAttachmentsController < ApplicationController
           settings = settings.with_trial
         end
 
-        url = settings.document_server.resolve_internal_url(callback.url)
+        url = callback.url
+        if url.nil?
+          logger.error("url is nil")
+          raise OnlyOfficeRedmine::Error.internal
+        end
+
+        url = settings.document_server.resolve_internal_url(url)
         uri = URI(url)
 
         tempfile = T.unsafe(uri).open(ssl_verify_mode: settings.ssl.verify_mode)
@@ -1144,24 +1216,31 @@ class OnlyOfficeAttachmentsController < ApplicationController
         end
 
         current.delete_from_disk
-      when OnlyOffice::APP::CallbackSaveError
-        logger.error(callback.description)
+      when Onlyoffice::DocsIntegrationSdk::DocumentStorage::Callback::Request::Status::SaveError
+        logger.error(status.description)
         raise OnlyOfficeRedmine::Error.internal
-      when OnlyOffice::APP::CallbackOmitted
-        logger.info(callback.description)
-      when OnlyOffice::APP::CallbackSaved
-        logger.info(callback.description)
-      when OnlyOffice::APP::CallbackForceSaveError
-        logger.error(callback.description)
+      when Onlyoffice::DocsIntegrationSdk::DocumentStorage::Callback::Request::Status::Closed
+        logger.info(status.description)
+      when Onlyoffice::DocsIntegrationSdk::DocumentStorage::Callback::Request::Status::ForceSave
+        logger.info(status.description)
+      when Onlyoffice::DocsIntegrationSdk::DocumentStorage::Callback::Request::Status::ForceSaveError
+        logger.error(status.description)
         raise OnlyOfficeRedmine::Error.internal
       else
         # nothing
       end
       # rubocop:enable Lint/DuplicateBranch
     rescue OnlyOfficeRedmine::Error => e
+      description = "Unknown status"
+
+      status = callback.status
+      unless status.nil?
+        description = status.description
+      end
+
       callback_error = OnlyOffice::APP::CallbackError.new(
         error: 1,
-        message: "#{e.message}: #{callback.description}"
+        message: "#{e.message}: #{description}"
       )
       return render(json: callback_error.serialize)
     end
