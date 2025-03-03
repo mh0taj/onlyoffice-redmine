@@ -2,7 +2,6 @@
 # frozen_string_literal: true
 
 require "logger"
-require "minitest/test_task"
 require "sorbet-runtime"
 require_relative "lib/only_office_redmine"
 require_relative "lib2/onlyoffice/resources"
@@ -75,7 +74,3 @@ task :readme_formats do
   File.write("./README.md", modified)
 end
 # rubocop:enable Rails/RakeEnvironment
-
-Minitest::TestTask.create(:test) do |task|
-  task.test_globs = ["test/**/*.rb"]
-end

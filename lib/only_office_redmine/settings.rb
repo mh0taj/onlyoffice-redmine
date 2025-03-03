@@ -148,33 +148,10 @@ module OnlyOfficeRedmine
       self.class.new(general: @general.copy, additional: @additional.copy)
     end
 
-    sig { returns(OnlyOffice::APP::Config) }
-    def app_config
-      OnlyOffice::APP::Config.new(
-        document: OnlyOffice::APP::Config::Document.new(
-          permissions: OnlyOffice::APP::Config::Permissions.new(
-            chat: editor.chat_enabled
-          )
-        ),
-        editor_config: OnlyOffice::APP::Config::EditorConfig.new(
-          lang: I18n.locale.to_s,
-          customization: OnlyOffice::APP::Config::Customization.new(
-            compact_header: editor.compact_header_enabled,
-            feedback: OnlyOffice::APP::Config::GenericFeedback.new(
-              value: editor.feedback_enabled
-            ),
-            force_save: editor.force_save_enabled,
-            help: editor.help_enabled,
-            toolbar_no_tabs: editor.toolbar_tabs_disabled
-          )
-        )
-      )
-    end
-
     SaveCallback = T.type_alias do
       T.proc
-       .params(patch: Settings, callback: OnlyOffice::API::Conversion)
-       .returns(OnlyOffice::API::Conversion)
+       .params(patch: Settings, callback: Onlyoffice::DocsIntegrationSdk::DocumentServer::Client::ConversionService::Request)
+       .returns(Onlyoffice::DocsIntegrationSdk::DocumentServer::Client::ConversionService::Request)
     end
 
     sig { params(callback: SaveCallback).void }
@@ -216,25 +193,43 @@ module OnlyOfficeRedmine
 
         client = patch.client
 
-        status, response = client.health_check.check
-        unless status
+        response = client.healthcheck.do
+
+        error = response.error
+        unless error.nil?
           description = "Failed to receive a response to document server health check"
-          logger.error("#{description} (#{response.code} #{response.message})")
+          logger.error("#{description} (#{response.response.code} #{response.response.message})")
           raise SettingsError.validation_failed
         end
 
-        version, response = client.command.version
-        if version.is_a?(OnlyOffice::API::CommandError)
-          logger.error("#{version.description} (#{response.code} #{response.message})")
+        command = Onlyoffice::DocsIntegrationSdk::DocumentServer::Client::CommandService::Request.new(
+          c: Onlyoffice::DocsIntegrationSdk::DocumentServer::Client::CommandService::Request::C::Version
+        )
+
+        _, response = client.command.do(command)
+
+        error = response.error
+        unless error.nil?
+          description = "Unknown error"
+          if error.is_a?(Onlyoffice::DocsIntegrationSdk::DocumentServer::Client::CommandService::Error)
+            description = error.description
+          end
+          logger.error("#{description} (#{response.response.code} #{response.response.message})")
           raise SettingsError.validation_failed
         end
 
-        conversion = OnlyOffice::API::Conversion.new
+        conversion = Onlyoffice::DocsIntegrationSdk::DocumentServer::Client::ConversionService::Request.new
         conversion = callback.call(patch, conversion)
 
-        result, response = client.conversion.convert(conversion)
-        if result.is_a?(OnlyOffice::API::ConversionError)
-          logger.error("#{result.description} (#{response.code} #{response.message})")
+        _, response = client.conversion.do(conversion)
+
+        error = response.error
+        unless error.nil?
+          description = "Unknown error"
+          if error.is_a?(Onlyoffice::DocsIntegrationSdk::DocumentServer::Client::ConversionService::Error)
+            description = error.description
+          end
+          logger.error("#{description} (#{response.response.code} #{response.response.message})")
           raise SettingsError.validation_failed
         end
 
@@ -254,14 +249,31 @@ module OnlyOfficeRedmine
       self.class.write(internal.serialize)
     end
 
-    sig { returns(OnlyOffice::API::Client) }
+    sig { returns(Onlyoffice::DocsIntegrationSdk::DocumentServer::Client) }
     def client
-      base_url = document_server.resolve_internal_url(document_server.url)
-      client = OnlyOffice::API::Client.new(base_url: base_url)
-      client = client.with_ssl_verify_mode(ssl.verify_mode)
+      # TODO: uri methods should return URI::HTTP instead of URI::Generic.
+      base_uri = T.cast(document_server.resolve_internal_uri(document_server.uri), URI::HTTP)
+
+      http = Net::HTTP.new(base_uri.hostname, base_uri.port)
+      http.verify_mode = ssl.verify_mode
+
+      client = Onlyoffice::DocsIntegrationSdk::DocumentServer::Client.new(
+        http: http,
+        base_uri: base_uri
+      )
+
       if jwt.enabled
-        client = client.with_jwt(jwt.secret, jwt.algorithm, nil, jwt.http_header)
+        client_jwt = Onlyoffice::DocsIntegrationSdk::DocumentServer::Client::Jwt.new(
+          jwt: Onlyoffice::DocsIntegrationSdk::Jwt.new(
+            secret: jwt.secret,
+            algorithm: jwt.algorithm,
+            claims: []
+          ),
+          header: jwt.http_header
+        )
+        client = client.with_jwt(client_jwt)
       end
+
       client
     end
 

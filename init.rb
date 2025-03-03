@@ -20,6 +20,7 @@
 
 require "redmine"
 require "rubygems"
+require "onlyoffice/docs_integration_sdk"
 require_relative "lib2/onlyoffice"
 require_relative "lib2/only_office"
 require_relative "app/views/views"
@@ -52,10 +53,10 @@ rescue Gem::MissingSpecError
   OnlyOfficeRedmine.logger.error("Gem '#{name}' version '#{version}' not found")
 end
 
-check_gem("jwt", "~> 2.7.1")
 check_gem("mustache", "~> 1.1.1")
+check_gem("onlyoffice-docs_integration_sdk", "~> 0.1.0")
 check_gem("render_parent", "~> 0.1.0")
-check_gem("sorbet-runtime", "~> 0.5.10969")
+check_gem("sorbet-runtime", "~> 0.5.11766")
 
 Redmine::Plugin.register(OnlyOfficeRedmine::NAME.to_sym) do
   # rubocop:disable Layout/LineLength

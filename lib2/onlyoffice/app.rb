@@ -18,4 +18,3 @@
 # frozen_string_literal: true
 
 require_relative "app/callback"
-require_relative "app/config"

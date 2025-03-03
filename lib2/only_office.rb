@@ -17,7 +17,5 @@
 # typed: true
 # frozen_string_literal: true
 
-require_relative "only_office/api/client"
-require_relative "only_office/api/conversion"
 require_relative "only_office/resources/format"
 require_relative "only_office/config"

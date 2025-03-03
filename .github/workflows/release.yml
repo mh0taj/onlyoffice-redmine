@@ -2,7 +2,8 @@ name: Release
 
 on:
   push:
-    branches: [main]
+    branches:
+    - main
   workflow_dispatch:
 
 jobs:
@@ -12,10 +13,8 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: Setup Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        bundler-cache: true
+    - name: Setup mise
+      uses: jdx/mise-action@v2
 
     - name: Update Submodules
       run: make submodule

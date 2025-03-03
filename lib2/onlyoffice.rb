@@ -17,7 +17,6 @@
 # typed: true
 # frozen_string_literal: true
 
-require_relative "onlyoffice/api"
 require_relative "onlyoffice/app"
 require_relative "onlyoffice/config"
 require_relative "onlyoffice/logger"
