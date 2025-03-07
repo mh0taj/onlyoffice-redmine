@@ -27,3 +27,5 @@ jobs:
       with:
         name: onlyoffice_redmine
         path: .build
+        if-no-files-found: error
+        include-hidden-files: true
