@@ -817,7 +817,12 @@ class OnlyOfficeAttachmentsController < ApplicationController
       end
 
       end_convert = result.end_convert
-      if !end_convert.nil? && end_convert
+      if end_convert.nil?
+        logger.error("end_convert is nil")
+        raise OnlyOfficeRedmine::Error.internal
+      end
+
+      unless end_convert
         self.response.add_header("Cache-Control", "no-cache, no-store")
         return render(json: result.serialize)
       end
@@ -977,7 +982,12 @@ class OnlyOfficeAttachmentsController < ApplicationController
       end
 
       end_convert = result.end_convert
-      if !end_convert.nil? && end_convert
+      if end_convert.nil?
+        logger.error("end_convert is nil")
+        raise OnlyOfficeRedmine::Error.internal
+      end
+
+      unless end_convert
         self.response.add_header("Cache-Control", "no-cache, no-store")
         return render(json: result.serialize)
       end
