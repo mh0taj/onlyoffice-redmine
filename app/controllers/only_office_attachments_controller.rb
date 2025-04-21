@@ -802,9 +802,9 @@ class OnlyOfficeAttachmentsController < ApplicationController
       )
     end
 
-    result, response = client.conversion.do(request)
-
     begin
+      result, response = client.conversion.do(request)
+
       error = response.error
       unless error.nil?
         description = "Unknown error"
@@ -962,9 +962,9 @@ class OnlyOfficeAttachmentsController < ApplicationController
       )
     end
 
-    result, response = client.conversion.do(request)
-
     begin
+      result, response = client.conversion.do(request)
+
       error = response.error
       unless error.nil?
         description = "Unknown error"
