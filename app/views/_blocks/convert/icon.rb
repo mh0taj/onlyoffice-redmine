@@ -26,4 +26,14 @@ module Blocks::Convert::Icon
   def convert_label
     I18n.t("onlyoffice_convert_dropdown")
   end
+
+  sig { overridable.returns(T.nilable(String)) }
+  def convert_icon
+    @convert_icon ||= nil
+  end
+
+  sig { overridable.params(icon: T.nilable(String)).void }
+  def convert_icon=(icon)
+    @convert_icon = icon
+  end
 end

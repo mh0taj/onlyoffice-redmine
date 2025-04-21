@@ -26,4 +26,14 @@ module Blocks::View::Icon
   def view_label
     I18n.t("open_in_onlyoffice")
   end
+
+  sig { overridable.returns(T.nilable(String)) }
+  def view_icon
+    @view_icon ||= nil
+  end
+
+  sig { overridable.params(icon: T.nilable(String)).void }
+  def view_icon=(icon)
+    @view_icon = icon
+  end
 end

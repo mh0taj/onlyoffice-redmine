@@ -26,4 +26,14 @@ module Blocks::Edit::Icon
   def edit_label
     I18n.t("edit_in_onlyoffice")
   end
+
+  sig { overridable.returns(T.nilable(String)) }
+  def edit_icon
+    @edit_icon ||= nil
+  end
+
+  sig { overridable.params(icon: T.nilable(String)).void }
+  def edit_icon=(icon)
+    @edit_icon = icon
+  end
 end

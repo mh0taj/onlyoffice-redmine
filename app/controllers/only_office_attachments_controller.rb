@@ -49,6 +49,12 @@ class OnlyOfficeAttachmentsController < ApplicationController
     view.edit_url = block.edit_url
     view.convert_url = block.convert_url
 
+    if Redmine::VERSION::MAJOR == 6
+      view.view_icon = helpers.sprite_icon("edit", view.view_label)
+      view.edit_icon = helpers.sprite_icon("edit", view.edit_icon)
+      view.convert_icon = helpers.sprite_icon("reload", view.convert_icon)
+    end
+
     view.setup_assets
     view.inline
   end
@@ -82,6 +88,12 @@ class OnlyOfficeAttachmentsController < ApplicationController
 
     if view.attachments.empty? && !view.new_url
       return ""
+    end
+
+    if Redmine::VERSION::MAJOR == 6
+      view.view_icon = helpers.sprite_icon("edit", view.view_label)
+      view.edit_icon = helpers.sprite_icon("edit", view.edit_icon)
+      view.convert_icon = helpers.sprite_icon("reload", view.convert_icon)
     end
 
     view.setup_assets
@@ -120,6 +132,12 @@ class OnlyOfficeAttachmentsController < ApplicationController
       return ""
     end
 
+    if Redmine::VERSION::MAJOR == 6
+      view.view_icon = helpers.sprite_icon("edit", view.view_label)
+      view.edit_icon = helpers.sprite_icon("edit", view.edit_icon)
+      view.convert_icon = helpers.sprite_icon("reload", view.convert_icon)
+    end
+
     view.setup_assets
     view.inline
   end
@@ -146,6 +164,12 @@ class OnlyOfficeAttachmentsController < ApplicationController
     view.attachments = setup_link_to_attachments(helpers, user, container)
     if view.attachments.empty?
       return ""
+    end
+
+    if Redmine::VERSION::MAJOR == 6
+      view.view_icon = helpers.sprite_icon("edit", view.view_label)
+      view.edit_icon = helpers.sprite_icon("edit", view.edit_icon)
+      view.convert_icon = helpers.sprite_icon("reload", view.convert_icon)
     end
 
     view.setup_assets
@@ -184,6 +208,12 @@ class OnlyOfficeAttachmentsController < ApplicationController
       return ""
     end
 
+    if Redmine::VERSION::MAJOR == 6
+      view.view_icon = helpers.sprite_icon("edit", view.view_label)
+      view.edit_icon = helpers.sprite_icon("edit", view.edit_icon)
+      view.convert_icon = helpers.sprite_icon("reload", view.convert_icon)
+    end
+
     view.setup_assets
     view.inline
   end
@@ -212,6 +242,12 @@ class OnlyOfficeAttachmentsController < ApplicationController
       return ""
     end
 
+    if Redmine::VERSION::MAJOR == 6
+      view.view_icon = helpers.sprite_icon("edit", view.view_label)
+      view.edit_icon = helpers.sprite_icon("edit", view.edit_icon)
+      view.convert_icon = helpers.sprite_icon("reload", view.convert_icon)
+    end
+
     view.setup_assets
     view.inline
   end
@@ -238,6 +274,12 @@ class OnlyOfficeAttachmentsController < ApplicationController
     view.attachments = setup_link_to_attachments(helpers, user, container)
     if view.attachments.empty?
       return ""
+    end
+
+    if Redmine::VERSION::MAJOR == 6
+      view.view_icon = helpers.sprite_icon("edit", view.view_label)
+      view.edit_icon = helpers.sprite_icon("edit", view.edit_icon)
+      view.convert_icon = helpers.sprite_icon("reload", view.convert_icon)
     end
 
     view.setup_assets
