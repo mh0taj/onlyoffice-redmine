@@ -36,13 +36,8 @@ if Redmine::VERSION::MAJOR == 4
   require_relative "app/helpers/only_office_view_helper"
 end
 
-logger = Rails.logger.dup
-logger.progname = OnlyOffice.logger.progname.dup
-OnlyOffice.logger = logger
-
-logger = Rails.logger.dup
-logger.progname = OnlyOfficeRedmine.logger.progname.dup
-OnlyOfficeRedmine.logger = logger
+OnlyOffice.logger = Rails.logger.dup
+OnlyOfficeRedmine.logger = Rails.logger.dup
 
 def check_gem(name, version)
   Gem::Specification.find_by_name(name, version)

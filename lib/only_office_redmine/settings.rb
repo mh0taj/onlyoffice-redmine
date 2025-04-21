@@ -277,7 +277,11 @@ module OnlyOfficeRedmine
       client
     end
 
-    sig { returns(Logger) }
+    # Redmine 5 uses Rails 6, which uses logger from the stdlib, which is
+    # Logger. Redmine 6 uses Rails 7, which uses a custom implementation of
+    # logger, which is BroadcastLogger.
+
+    sig { returns(T.any(Logger, ActiveSupport::BroadcastLogger)) }
     private def logger
       OnlyOfficeRedmine.logger
     end
