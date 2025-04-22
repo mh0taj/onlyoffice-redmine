@@ -29,7 +29,7 @@ class OnlyOfficeAttachmentsController < ApplicationController
   # Host: {{plugin_url}}
   # ```
   #
-  # [Redmine Reference](https://github.com/redmine/redmine/blob/5.0.0/app/controllers/attachments_controller.rb#L38)
+  # [Redmine Reference](https://github.com/redmine/redmine/blob/6.0.0/app/controllers/attachments_controller.rb#L38)
   sig { params(helpers: T.untyped, attachment: ::Attachment).returns(String) }
   def self.show_attachment(helpers, attachment)
     unless onlyoffice_plugin_available?
@@ -66,7 +66,7 @@ class OnlyOfficeAttachmentsController < ApplicationController
   # Host: {{plugin_url}}
   # ```
   #
-  # [Redmine Reference](https://github.com/redmine/redmine/blob/5.0.0/app/controllers/documents_controller.rb#L49)
+  # [Redmine Reference](https://github.com/redmine/redmine/blob/6.0.0/app/controllers/documents_controller.rb#L49)
   sig { params(helpers: T.untyped, document: ::Document).returns(String) }
   def self.show_document(helpers, document)
     unless onlyoffice_plugin_available?
@@ -107,7 +107,7 @@ class OnlyOfficeAttachmentsController < ApplicationController
   # Host: {{plugin_url}}
   # ```
   #
-  # [Redmine Reference](https://github.com/redmine/redmine/blob/5.0.0/app/controllers/files_controller.rb#L31)
+  # [Redmine Reference](https://github.com/redmine/redmine/blob/6.0.0/app/controllers/files_controller.rb#L31)
   sig { params(helpers: T.untyped, containers: T.untyped).returns(String) }
   def self.files(helpers, containers)
     unless onlyoffice_plugin_available?
@@ -149,7 +149,7 @@ class OnlyOfficeAttachmentsController < ApplicationController
   # Host: {{plugin_url}}
   # ```
   #
-  # [Redmine Reference](https://github.com/redmine/redmine/blob/5.0.0/app/controllers/issues_controller.rb#L95)
+  # [Redmine Reference](https://github.com/redmine/redmine/blob/6.0.0/app/controllers/issues_controller.rb#L95)
   sig { params(helpers: T.untyped, issue: ::Issue).returns(String) }
   def self.show_issue(helpers, issue)
     unless onlyoffice_plugin_available?
@@ -183,7 +183,7 @@ class OnlyOfficeAttachmentsController < ApplicationController
   # Host: {{plugin_url}}
   # ```
   #
-  # [Redmine Reference](https://github.com/redmine/redmine/blob/5.0.0/app/controllers/messages_controller.rb#L36)
+  # [Redmine Reference](https://github.com/redmine/redmine/blob/6.0.0/app/controllers/messages_controller.rb#L37)
   sig do
     params(helpers: T.untyped, topic: ::Message, replies: T::Array[::Message])
       .returns(String)
@@ -225,7 +225,7 @@ class OnlyOfficeAttachmentsController < ApplicationController
   # Host: {{plugin_url}}
   # ```
   #
-  # [Redmine Reference](https://github.com/redmine/redmine/blob/5.0.0/app/controllers/news_controller.rb#L69)
+  # [Redmine Reference](https://github.com/redmine/redmine/blob/6.0.0/app/controllers/news_controller.rb#L69)
   sig { params(helpers: T.untyped, news: ::News).returns(String) }
   def self.show_news(helpers, news)
     unless onlyoffice_plugin_available?
@@ -259,7 +259,7 @@ class OnlyOfficeAttachmentsController < ApplicationController
   # Host: {{plugin_url}}
   # ```
   #
-  # [Redmine Reference](https://github.com/redmine/redmine/blob/5.0.0/app/controllers/news_controller.rb#L69)
+  # [Redmine Reference](https://github.com/redmine/redmine/blob/6.0.0/app/controllers/news_controller.rb#L69)
   sig { params(helpers: T.untyped, page: ::WikiPage).returns(String) }
   def self.show_wiki_page(helpers, page)
     unless onlyoffice_plugin_available?

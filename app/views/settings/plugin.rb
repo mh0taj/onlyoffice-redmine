@@ -17,8 +17,8 @@
 # typed: true
 # frozen_string_literal: true
 
-# [Redmine Reference: Controller](https://github.com/redmine/redmine/blob/5.0.0/app/controllers/settings_controller.rb#L64) \
-# [Redmine Reference: View](https://github.com/redmine/redmine/blob/5.0.0/app/views/settings/plugin.html.erb)
+# [Redmine Reference: Controller](https://github.com/redmine/redmine/blob/6.0.0/app/controllers/settings_controller.rb#L64) \
+# [Redmine Reference: View](https://github.com/redmine/redmine/blob/6.0.0/app/views/settings/plugin.html.erb)
 class Views::Settings::Plugin < Views::Mustache
   extend T::Sig
   include Blocks::Assets

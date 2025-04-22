@@ -17,7 +17,7 @@
 # typed: true
 # frozen_string_literal: true
 
-# [Redmine Reference](https://github.com/redmine/redmine/blob/5.0.0/app/views/attachments/_links.html.erb)
+# [Redmine Reference](https://github.com/redmine/redmine/blob/6.0.0/app/views/attachments/_links.html.erb)
 module Blocks::Attachments
   extend T::Sig
   extend T::Helpers

@@ -36,7 +36,7 @@ module OnlyOfficeViewHelper
     extend T::Helpers
     abstract!
 
-    # [Redmine Reference](https://github.com/redmine/redmine/blob/5.0.0/app/helpers/attachments_helper.rb#L38)
+    # [Redmine Reference](https://github.com/redmine/redmine/blob/6.0.0/app/helpers/attachments_helper.rb#L37)
     sig do
       params(
         helpers: T.untyped,

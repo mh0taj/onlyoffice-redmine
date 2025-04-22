@@ -39,19 +39,19 @@ module Blocks::Helpers
     end
   end
 
-  # [Redmine Reference: Helper](https://github.com/redmine/redmine/blob/5.0.0/app/helpers/application_helper.rb#L1677)
+  # [Redmine Reference: Helper](https://github.com/redmine/redmine/blob/6.0.0/app/helpers/application_helper.rb#L1744)
   sig { params(url: String).returns(String) }
   def helpers_image_tag(url)
     helpers.image_tag(url, plugin: "onlyoffice_redmine")
   end
 
-  # [Redmine Reference: Helper](https://github.com/redmine/redmine/blob/5.0.0/app/helpers/application_helper.rb#L1657)
+  # [Redmine Reference: Helper](https://github.com/redmine/redmine/blob/6.0.0/app/helpers/application_helper.rb#L1724)
   sig { params(source: String).returns(String) }
   def helpers_stylesheet_link_tag(source)
     helpers.stylesheet_link_tag(source, plugin: "onlyoffice_redmine")
   end
 
-  # [Redmine Reference: Helper](https://github.com/redmine/redmine/blob/5.0.0/app/helpers/application_helper.rb#L1691)
+  # [Redmine Reference: Helper](https://github.com/redmine/redmine/blob/6.0.0/app/helpers/application_helper.rb#L1758)
   sig { params(source: String).returns(String) }
   def javascript_include_tag(source)
     helpers.javascript_include_tag(source, plugin: "onlyoffice_redmine")

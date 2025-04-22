@@ -93,7 +93,7 @@
      * @returns {void}
      */
     setup() {
-      // https://github.com/redmine/redmine/blob/5.0.0/app/views/attachments/_links.html.erb#L2
+      // https://github.com/redmine/redmine/blob/6.0.0/app/views/attachments/_links.html.erb#L2
       const contextual = document.querySelector("#content > .contextual")
       if (!contextual || !(contextual instanceof HTMLElement)) return
 
@@ -161,7 +161,7 @@
       const clone = template.content.cloneNode(true)
       if (!(clone instanceof DocumentFragment)) return
 
-      // https://github.com/redmine/redmine/blob/5.0.0/app/views/documents/show.html.erb#L31
+      // https://github.com/redmine/redmine/blob/6.0.0/app/views/documents/show.html.erb#L31
       const sibling = document.querySelector("#attach_files_link")
       if (!sibling) return
 
@@ -191,7 +191,7 @@
      * @returns {void}
      */
     setupAttachments() {
-      // https://github.com/redmine/redmine/blob/5.0.0/app/views/files/index.html.erb#L36
+      // https://github.com/redmine/redmine/blob/6.0.0/app/views/files/index.html.erb#L36
       /** @type {AttachmentLink[]} */
       const links = []
       const files = document.querySelectorAll(".file")
@@ -716,7 +716,7 @@
      * @returns {void}
      */
     setupForm(action) {
-      // https://github.com/redmine/redmine/blob/5.0.0/app/views/settings/plugin.html.erb#L4
+      // https://github.com/redmine/redmine/blob/6.0.0/app/views/settings/plugin.html.erb#L4
       const form = document.querySelector("#settings > form")
       if (!form || !(form instanceof HTMLFormElement)) return
       form.action = action
@@ -726,7 +726,7 @@
      * Removes classes from the container so that the sections have a
      * transparent background.
      *
-     * [Redmine Reference: View](https://github.com/redmine/redmine/blob/5.0.0/app/views/settings/plugin.html.erb#L5)
+     * [Redmine Reference: View](https://github.com/redmine/redmine/blob/6.0.0/app/views/settings/plugin.html.erb#L5)
      *
      * @param {HTMLElement} settings
      * @returns {void}
@@ -835,7 +835,7 @@
      * @return {AttachmentLink[]}
      */
     links() {
-      // https://github.com/redmine/redmine/blob/5.0.0/app/views/attachments/_links.html.erb#L28
+      // https://github.com/redmine/redmine/blob/6.0.0/app/views/attachments/_links.html.erb#L28
       /** @type {AttachmentLink[]} */
       const links = []
       const attachments = document.querySelectorAll(".attachments")
@@ -892,7 +892,7 @@
 
   /**
    * [Local Reference](../../app/views/_blocks/progress.mustache) \
-   * [Redmine Reference: Helper](https://github.com/redmine/redmine/blob/5.0.0/app/helpers/application_helper.rb#L1561)
+   * [Redmine Reference: Helper](https://github.com/redmine/redmine/blob/6.0.0/app/helpers/application_helper.rb#L1628)
    */
   const Progress = {
     /**
@@ -941,8 +941,8 @@
   // Functions
 
   /**
-   * [Redmine Reference: View](https://github.com/redmine/redmine/blob/5.0.0/app/views/layouts/base.html.erb#L21) \
-   * [Redmine Reference: Helper](https://github.com/redmine/redmine/blob/5.0.0/app/helpers/application_helper.rb#L813)
+   * [Redmine Reference: View](https://github.com/redmine/redmine/blob/6.0.0/app/views/layouts/base.html.erb#L20) \
+   * [Redmine Reference: Helper](https://github.com/redmine/redmine/blob/6.0.0/app/helpers/application_helper.rb#L863)
    *
    * @param {string} controller
    * @param {string} action
@@ -980,8 +980,8 @@
   }
 
   /**
-   * [Redmine Reference: View](https://github.com/redmine/redmine/blob/5.0.0/app/views/layouts/base.html.erb#L11) \
-   * [Redmine Reference: Helper](https://github.com/redmine/redmine/blob/5.0.0/app/helpers/application_helper.rb#L1741)
+   * [Redmine Reference: View](https://github.com/redmine/redmine/blob/6.0.0/app/views/layouts/base.html.erb#L10) \
+   * [Redmine Reference: Helper](https://github.com/redmine/redmine/blob/6.0.0/app/helpers/application_helper.rb#L1810)
    *
    * @param {string} href
    * @returns {void}
