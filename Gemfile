@@ -5,7 +5,7 @@
 
 source "https://rubygems.org"
 
-gem "i18n", "1.10.0"
+gem "i18n", "1.14.1"
 gem "mustache", "1.1.1"
 gem "onlyoffice-docs_integration_sdk", "0.1.0"
 gem "rails", "6.1.4.7"
