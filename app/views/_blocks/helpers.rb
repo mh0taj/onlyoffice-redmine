@@ -23,11 +23,11 @@ module Blocks::Helpers
   include Kernel
   abstract!
 
-  # [Ruby on Rails Reference](https://api.rubyonrails.org/v6.1.0/classes/ActionView/Helpers.html)
+  # [Ruby on Rails Reference](https://api.rubyonrails.org/v7.2.2.1/classes/ActionView/Helpers.html)
   sig { abstract.returns(T.untyped) }
   def helpers; end
 
-  # [Ruby on Rails Reference](https://api.rubyonrails.org/v6.1.0/classes/ActionView/Helpers/FormTagHelper.html#method-i-form_tag)
+  # [Ruby on Rails Reference](https://api.rubyonrails.org/v7.2.2.1/classes/ActionView/Helpers/FormTagHelper.html#method-i-form_tag)
   sig { params(url: String, multipart: T::Boolean).returns(T.untyped) }
   def helpers_form_tag(url = "#", multipart: true)
     lambda do |text|
