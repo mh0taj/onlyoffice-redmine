@@ -15,5 +15,10 @@ limitations under the License.
 -->
 
 <template id="onlyoffice-convert">
+  {{# convert_icon }}
+  <a class="icon-only" title="{{ convert_label }}">{{{ convert_icon }}}</a>
+  {{/ convert_icon }}
+  {{^ convert_icon }}
   <a class="icon-only onlyoffice-icon onlyoffice-icon__convert" title="{{ convert_label }}"></a>
+  {{/ convert_icon }}
 </template>

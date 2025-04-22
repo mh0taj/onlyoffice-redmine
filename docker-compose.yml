@@ -16,7 +16,8 @@ services:
     - JWT_SECRET=secret
 
   redmine:
-    image: redmine:5.0.5-alpine3.18
+    # image: redmine:5.1.7-alpine3.21
+    image: redmine:6.0.4-alpine3.21
     volumes:
     - ./.build/onlyoffice_redmine:/usr/src/redmine/plugins/onlyoffice_redmine
     - ./config.ru:/usr/src/redmine/config.ru

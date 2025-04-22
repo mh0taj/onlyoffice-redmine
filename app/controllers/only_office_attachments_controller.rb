@@ -29,7 +29,7 @@ class OnlyOfficeAttachmentsController < ApplicationController
   # Host: {{plugin_url}}
   # ```
   #
-  # [Redmine Reference](https://github.com/redmine/redmine/blob/5.0.0/app/controllers/attachments_controller.rb#L38)
+  # [Redmine Reference](https://github.com/redmine/redmine/blob/6.0.0/app/controllers/attachments_controller.rb#L38)
   sig { params(helpers: T.untyped, attachment: ::Attachment).returns(String) }
   def self.show_attachment(helpers, attachment)
     unless onlyoffice_plugin_available?
@@ -49,6 +49,12 @@ class OnlyOfficeAttachmentsController < ApplicationController
     view.edit_url = block.edit_url
     view.convert_url = block.convert_url
 
+    if Redmine::VERSION::MAJOR == 6
+      view.view_icon = helpers.sprite_icon("edit", view.view_label)
+      view.edit_icon = helpers.sprite_icon("edit", view.edit_icon)
+      view.convert_icon = helpers.sprite_icon("reload", view.convert_icon)
+    end
+
     view.setup_assets
     view.inline
   end
@@ -60,7 +66,7 @@ class OnlyOfficeAttachmentsController < ApplicationController
   # Host: {{plugin_url}}
   # ```
   #
-  # [Redmine Reference](https://github.com/redmine/redmine/blob/5.0.0/app/controllers/documents_controller.rb#L49)
+  # [Redmine Reference](https://github.com/redmine/redmine/blob/6.0.0/app/controllers/documents_controller.rb#L49)
   sig { params(helpers: T.untyped, document: ::Document).returns(String) }
   def self.show_document(helpers, document)
     unless onlyoffice_plugin_available?
@@ -84,6 +90,12 @@ class OnlyOfficeAttachmentsController < ApplicationController
       return ""
     end
 
+    if Redmine::VERSION::MAJOR == 6
+      view.view_icon = helpers.sprite_icon("edit", view.view_label)
+      view.edit_icon = helpers.sprite_icon("edit", view.edit_icon)
+      view.convert_icon = helpers.sprite_icon("reload", view.convert_icon)
+    end
+
     view.setup_assets
     view.inline
   end
@@ -95,7 +107,7 @@ class OnlyOfficeAttachmentsController < ApplicationController
   # Host: {{plugin_url}}
   # ```
   #
-  # [Redmine Reference](https://github.com/redmine/redmine/blob/5.0.0/app/controllers/files_controller.rb#L31)
+  # [Redmine Reference](https://github.com/redmine/redmine/blob/6.0.0/app/controllers/files_controller.rb#L31)
   sig { params(helpers: T.untyped, containers: T.untyped).returns(String) }
   def self.files(helpers, containers)
     unless onlyoffice_plugin_available?
@@ -120,6 +132,12 @@ class OnlyOfficeAttachmentsController < ApplicationController
       return ""
     end
 
+    if Redmine::VERSION::MAJOR == 6
+      view.view_icon = helpers.sprite_icon("edit", view.view_label)
+      view.edit_icon = helpers.sprite_icon("edit", view.edit_icon)
+      view.convert_icon = helpers.sprite_icon("reload", view.convert_icon)
+    end
+
     view.setup_assets
     view.inline
   end
@@ -131,7 +149,7 @@ class OnlyOfficeAttachmentsController < ApplicationController
   # Host: {{plugin_url}}
   # ```
   #
-  # [Redmine Reference](https://github.com/redmine/redmine/blob/5.0.0/app/controllers/issues_controller.rb#L95)
+  # [Redmine Reference](https://github.com/redmine/redmine/blob/6.0.0/app/controllers/issues_controller.rb#L95)
   sig { params(helpers: T.untyped, issue: ::Issue).returns(String) }
   def self.show_issue(helpers, issue)
     unless onlyoffice_plugin_available?
@@ -148,6 +166,12 @@ class OnlyOfficeAttachmentsController < ApplicationController
       return ""
     end
 
+    if Redmine::VERSION::MAJOR == 6
+      view.view_icon = helpers.sprite_icon("edit", view.view_label)
+      view.edit_icon = helpers.sprite_icon("edit", view.edit_icon)
+      view.convert_icon = helpers.sprite_icon("reload", view.convert_icon)
+    end
+
     view.setup_assets
     view.inline
   end
@@ -159,7 +183,7 @@ class OnlyOfficeAttachmentsController < ApplicationController
   # Host: {{plugin_url}}
   # ```
   #
-  # [Redmine Reference](https://github.com/redmine/redmine/blob/5.0.0/app/controllers/messages_controller.rb#L36)
+  # [Redmine Reference](https://github.com/redmine/redmine/blob/6.0.0/app/controllers/messages_controller.rb#L37)
   sig do
     params(helpers: T.untyped, topic: ::Message, replies: T::Array[::Message])
       .returns(String)
@@ -184,6 +208,12 @@ class OnlyOfficeAttachmentsController < ApplicationController
       return ""
     end
 
+    if Redmine::VERSION::MAJOR == 6
+      view.view_icon = helpers.sprite_icon("edit", view.view_label)
+      view.edit_icon = helpers.sprite_icon("edit", view.edit_icon)
+      view.convert_icon = helpers.sprite_icon("reload", view.convert_icon)
+    end
+
     view.setup_assets
     view.inline
   end
@@ -195,7 +225,7 @@ class OnlyOfficeAttachmentsController < ApplicationController
   # Host: {{plugin_url}}
   # ```
   #
-  # [Redmine Reference](https://github.com/redmine/redmine/blob/5.0.0/app/controllers/news_controller.rb#L69)
+  # [Redmine Reference](https://github.com/redmine/redmine/blob/6.0.0/app/controllers/news_controller.rb#L69)
   sig { params(helpers: T.untyped, news: ::News).returns(String) }
   def self.show_news(helpers, news)
     unless onlyoffice_plugin_available?
@@ -212,6 +242,12 @@ class OnlyOfficeAttachmentsController < ApplicationController
       return ""
     end
 
+    if Redmine::VERSION::MAJOR == 6
+      view.view_icon = helpers.sprite_icon("edit", view.view_label)
+      view.edit_icon = helpers.sprite_icon("edit", view.edit_icon)
+      view.convert_icon = helpers.sprite_icon("reload", view.convert_icon)
+    end
+
     view.setup_assets
     view.inline
   end
@@ -223,7 +259,7 @@ class OnlyOfficeAttachmentsController < ApplicationController
   # Host: {{plugin_url}}
   # ```
   #
-  # [Redmine Reference](https://github.com/redmine/redmine/blob/5.0.0/app/controllers/news_controller.rb#L69)
+  # [Redmine Reference](https://github.com/redmine/redmine/blob/6.0.0/app/controllers/news_controller.rb#L69)
   sig { params(helpers: T.untyped, page: ::WikiPage).returns(String) }
   def self.show_wiki_page(helpers, page)
     unless onlyoffice_plugin_available?
@@ -238,6 +274,12 @@ class OnlyOfficeAttachmentsController < ApplicationController
     view.attachments = setup_link_to_attachments(helpers, user, container)
     if view.attachments.empty?
       return ""
+    end
+
+    if Redmine::VERSION::MAJOR == 6
+      view.view_icon = helpers.sprite_icon("edit", view.view_label)
+      view.edit_icon = helpers.sprite_icon("edit", view.edit_icon)
+      view.convert_icon = helpers.sprite_icon("reload", view.convert_icon)
     end
 
     view.setup_assets

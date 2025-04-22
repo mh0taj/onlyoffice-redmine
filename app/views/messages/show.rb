@@ -17,7 +17,7 @@
 # typed: true
 # frozen_string_literal: true
 
-# [Redmine Reference](https://github.com/redmine/redmine/blob/5.0.0/app/views/messages/show.html.erb)
+# [Redmine Reference](https://github.com/redmine/redmine/blob/6.0.0/app/views/messages/show.html.erb)
 class Views::Messages::Show < Views::Mustache
   extend T::Sig
   include Blocks::Assets

@@ -182,7 +182,7 @@ module OnlyOfficeRedmine
 
     sig { override.params(user: User).returns(T::Boolean) }
     def addition_allowed?(user)
-      # https://github.com/redmine/redmine/blob/5.0.0/app/views/documents/show.html.erb#L30
+      # https://github.com/redmine/redmine/blob/6.0.0/app/views/documents/show.html.erb#L30
       user.allowed_to?(
         {
           controller: "documents",
@@ -254,7 +254,7 @@ module OnlyOfficeRedmine
 
     sig { override.params(user: User).returns(T::Boolean) }
     def addition_allowed?(user)
-      # https://github.com/redmine/redmine/blob/5.0.0/app/views/issues/_action_menu.html.erb#L4
+      # https://github.com/redmine/redmine/blob/6.0.0/app/views/issues/_action_menu.html.erb#L4
       @issue.editable?(user.internal)
     end
 
@@ -320,7 +320,7 @@ module OnlyOfficeRedmine
 
     sig { override.params(user: User).returns(T::Boolean) }
     def addition_allowed?(user)
-      # https://github.com/redmine/redmine/blob/5.0.0/app/views/messages/show.html.erb#L11
+      # https://github.com/redmine/redmine/blob/6.0.0/app/views/messages/show.html.erb#L13
       @message.editable_by?(user.internal)
     end
 
@@ -386,7 +386,7 @@ module OnlyOfficeRedmine
 
     sig { override.params(user: User).returns(T::Boolean) }
     def addition_allowed?(user)
-      # https://github.com/redmine/redmine/blob/5.0.0/app/views/news/show.html.erb#L8
+      # https://github.com/redmine/redmine/blob/6.0.0/app/views/news/show.html.erb#L9
       user.allowed_to?(:manage_news, @news.project)
     end
 
@@ -450,7 +450,7 @@ module OnlyOfficeRedmine
 
     sig { override.params(user: User).returns(T::Boolean) }
     def addition_allowed?(user)
-      # https://github.com/redmine/redmine/blob/5.0.0/app/views/files/index.html.erb#L2
+      # https://github.com/redmine/redmine/blob/6.0.0/app/views/files/index.html.erb#L2
       user.allowed_to?(:manage_files, @project)
     end
 
@@ -516,7 +516,7 @@ module OnlyOfficeRedmine
 
     sig { override.params(user: User).returns(T::Boolean) }
     def addition_allowed?(user)
-      # https://github.com/redmine/redmine/blob/5.0.0/app/views/wiki/show.html.erb#L70
+      # https://github.com/redmine/redmine/blob/6.0.0/app/views/wiki/show.html.erb#L73
       @page.editable_by?(user.internal) &&
         user.allowed_to?(
           {

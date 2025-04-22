@@ -15,5 +15,10 @@ limitations under the License.
 -->
 
 <template id="onlyoffice-view">
+  {{# view_icon }}
+  <a class="icon-only" target="_blank" title="{{ view_label }}">{{{ view_icon }}}</a>
+  {{/ view_icon }}
+  {{^ view_icon }}
   <a class="icon-only onlyoffice-icon onlyoffice-icon__view" target="_blank" title="{{ view_label }}"></a>
+  {{/ view_icon }}
 </template>

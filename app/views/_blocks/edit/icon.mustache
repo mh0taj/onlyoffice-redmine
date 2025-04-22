@@ -15,5 +15,10 @@ limitations under the License.
 -->
 
 <template id="onlyoffice-edit">
+  {{# edit_icon }}
+  <a class="icon-only" target="_blank" title="{{ edit_label }}">{{{ edit_icon }}}</a>
+  {{/ edit_icon }}
+  {{^ edit_icon }}
   <a class="icon-only onlyoffice-icon onlyoffice-icon__edit" target="_blank" title="{{ edit_label }}"></a>
+  {{/ edit_icon }}
 </template>
