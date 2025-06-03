@@ -398,7 +398,7 @@
     },
 
     /**
-     * [OnlyOffice Reference](https://api.onlyoffice.com/editors/config/events#onAppReady)
+     * [OnlyOffice Reference](https://api.onlyoffice.com/docs/docs-api/usage-api/config/events/#onappready)
      *
      * @returns {void}
      */
@@ -409,7 +409,7 @@
     },
 
     /**
-     * [OnlyOffice Reference](https://api.onlyoffice.com/editors/config/events#onError)
+     * [OnlyOffice Reference](https://api.onlyoffice.com/docs/docs-api/usage-api/config/events/#onerror)
      *
      * @param {any} event
      * @returns {void}
@@ -421,7 +421,7 @@
     },
 
     /**
-     * [OnlyOffice Reference](https://api.onlyoffice.com/editors/config/events#onRequestSaveAs)
+     * [OnlyOffice Reference](https://api.onlyoffice.com/docs/docs-api/usage-api/config/events/#onrequestsaveas)
      *
      * @param {any} event
      * @returns {Promise<void>}

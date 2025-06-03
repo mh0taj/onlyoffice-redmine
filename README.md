@@ -15,7 +15,7 @@ Additionally, the plugin adds general pages:
 - Create in ONLYOFFICE
 - Convert with ONLYOFFICE
 
-Find out more details [here](https://api.onlyoffice.com/editors/redmine#howitworks).
+Find out more details [here](https://api.onlyoffice.com/docs/docs-api/get-started/ready-to-use-connectors/redmine-integration/#how-it-works).
 
 ## Features
 
@@ -106,7 +106,7 @@ And finally, restart Redmine. Read more about the plugin installation on the Red
 ### Security
 
 - Secret key. \
-  Starting from ONLYOFFICE Document Server 7.2, JWT authentication is enabled by default and the secret key is generated automatically to restrict the access to ONLYOFFICE Docs and for security reasons and data integrity. Specify your secret key in the ONLYOFFICE Docs [config file](https://api.onlyoffice.com/editors/signature/), then specify the same key in the settings page of the plugin. Leave blank to disable authentication.
+  Starting from ONLYOFFICE Document Server 7.2, JWT authentication is enabled by default and the secret key is generated automatically to restrict the access to ONLYOFFICE Docs and for security reasons and data integrity. Specify your secret key in the ONLYOFFICE Docs [config file](https://api.onlyoffice.com/docs/docs-api/additional-api/signature/), then specify the same key in the settings page of the plugin. Leave blank to disable authentication.
 - Authorization header.
 - Disable certificate verification (insecure).
 
@@ -124,7 +124,7 @@ And finally, restart Redmine. Read more about the plugin installation on the Red
 
 ## How It Works
 
-The plugin uses the [ONLYOFFICE Docs API](https://api.onlyoffice.com/editors/basic) and is integrated into various Redmine pages, including [Documents](#documents), [Attachments](#attachment), [Files](#files), [Issue](#issue), [News](#news), [Wiki](#wiki), and [Forums](#forums). Additionally, the plugin adds general pages such as ["Create In ONLYOFFICE"](#create-in-onlyoffice) and ["Convert In ONLYOFFICE"](#convert-in-onlyoffice).
+The plugin uses the [ONLYOFFICE Docs API](https://api.onlyoffice.com/docs/docs-api/get-started/basic-concepts/) and is integrated into various Redmine pages, including [Documents](#documents), [Attachments](#attachment), [Files](#files), [Issue](#issue), [News](#news), [Wiki](#wiki), and [Forums](#forums). Additionally, the plugin adds general pages such as ["Create In ONLYOFFICE"](#create-in-onlyoffice) and ["Convert In ONLYOFFICE"](#convert-in-onlyoffice).
 
 ### Documents
 
