@@ -231,3 +231,14 @@ limitations under the License.
   fill: #505050;
   margin-left: 6px;
 }
+
+.onlyoffice-icon__convert {
+    background: no-repeat left +2.5px center / 10% url("../images/actions/convert.svg");
+    padding-left: 25px !important;
+}
+
+.onlyoffice-icon__edit {
+    background: no-repeat left +6px center / 10% url("../images/actions/edit.svg");
+    padding-left: 25px !important;
+    background-size: 18px !important;
+}
