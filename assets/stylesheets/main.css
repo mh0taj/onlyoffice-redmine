@@ -242,3 +242,9 @@ limitations under the License.
     padding-left: 25px !important;
     background-size: 18px !important;
 }
+
+.onlyoffice-icon__view {
+    background: no-repeat left+2.5px center/80% url("../images/view.png");
+    padding-left: 27px !important;
+    background-size: 20px !important;
+}
