@@ -1,6 +1,6 @@
 # ONLYOFFICE plugin for Redmine
 
-A clean, production-ready plugin that lets [Redmine](https://www.redmine.org/) users view, create, convert, and co-edit office files inside Redmine using [ONLYOFFICE Docs](https://www.onlyoffice.com/docs) (Document Server). 
+A clean, production-ready plugin that lets [Redmine](https://www.redmine.org/) users view, create, convert, and co-edit office files inside Redmine using [ONLYOFFICE Docs](https://www.onlyoffice.com/docs) (Document Server).
 
 ## Features ⭐
 
@@ -119,7 +119,7 @@ And finally, restart Redmine. Read more about the plugin installation on the Red
 
 ## How it works
 
-The plugin uses the [ONLYOFFICE Docs API](https://api.onlyoffice.com/docs/docs-api/get-started/basic-concepts/) and is integrated into various Redmine pages, including [Documents](#documents), [Attachments](#attachment), [Files](#files), [Issues](#issues), [News](#news), [Wiki](#wiki), and [Forums](#forums). 
+The plugin uses the [ONLYOFFICE Docs API](https://api.onlyoffice.com/docs/docs-api/get-started/basic-concepts/) and is integrated into various Redmine pages, including [Documents](#documents), [Attachments](#attachment), [Files](#files), [Issues](#issues), [News](#news), [Wiki](#wiki), and [Forums](#forums).
 
 Additionally, the plugin adds general pages such as ["Create in ONLYOFFICE"](#create-in-onlyoffice) and ["Convert in ONLYOFFICE"](#convert-in-onlyoffice).
 
