@@ -21,7 +21,7 @@ class Views::OnlyOffice::Editor < Views::Mustache
   extend T::Sig
   include Blocks::Assets
 
-  self.template_file = "#{template_path}/onlyoffice/editor.mustache"
+  self.template_file = "#{Array(template_path).first}/onlyoffice/editor.mustache"
 
   sig { override.params(helpers: T.untyped).void }
   def initialize(helpers:)

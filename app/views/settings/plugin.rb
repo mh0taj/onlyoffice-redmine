@@ -24,7 +24,7 @@ class Views::Settings::Plugin < Views::Mustache
   include Blocks::Assets
   include Blocks::Banner
 
-  self.template_file = "#{template_path}/settings/plugin.mustache"
+  self.template_file = "#{Array(template_path).first}/settings/plugin.mustache"
 
   sig { returns(String) }
   attr_accessor :action

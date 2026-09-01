@@ -23,5 +23,5 @@ class Views::Wiki::Show < Views::Mustache
   include Blocks::Assets
   include Blocks::Attachments
 
-  self.template_file = "#{template_path}/wiki/show.mustache"
+  self.template_file = "#{Array(template_path).first}/wiki/show.mustache"
 end

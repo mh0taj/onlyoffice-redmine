@@ -21,7 +21,7 @@ class Views::OnlyOffice::New < Views::Mustache
   extend T::Sig
   include Blocks::Assets
 
-  self.template_file = "#{template_path}/onlyoffice/new.mustache"
+  self.template_file = "#{Array(template_path).first}/onlyoffice/new.mustache"
 
   sig { returns(String) }
   attr_accessor :title
